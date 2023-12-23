@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script>window.isMod=false</script>
+    <script src="lib/p5.js"></script>
+    <script src="lib/p5sound.js"></script>
+        
+    <script src="lib/planck.js"></script>
+    <script src="lib/p5play.js"></script>
+
+    <script src="lib/popper.js"></script>
+    <script src="lib/tippy.js"></script>
+
+    <script src="lib/particles.js"></script>
+
+    <style>
+      @font-face {
+        font-family: 'Material Symbols Rounded';
+        font-style: normal;
+        font-weight: 100 700;
+        src: url(font/material.woff2) format('woff2');
+      }
+
+      .material-symbols-rounded {
+        font-family: 'Material Symbols Rounded';
+        font-weight: normal;
+        font-style: normal;
+        font-size: 24px;
+        line-height: 1;
+        letter-spacing: normal;
+        text-transform: none;
+        display: inline-block;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+        -webkit-font-feature-settings: 'liga';
+        -webkit-font-smoothing: antialiased;
+      }
+    </style>
+    <link rel="stylesheet" href="./css/game.css">
+
+    <style id="customTheme"></style>
+
+    <meta charset="UTF-8">
+    <title>Dodecadone</title>
+    <link rel="icon" type="image/png" href="./favicon.png" />
+    <script src="./settings.js" defer></script>
+    <script src="./defaultMod.js"></script>
+  </head>
+  <body>
+    <div id="particles-js"></div>
+
+    <cover2></cover2>
+    <cover3></cover3>
+    <cover></cover>
+
+    <content>
+
+      <div id="bgText" class="generalText">
+        <h1 id="textOne">imma dodeca</h1>
+        <p id="textTwo">YOUR MOTHER</p>
+      </div>
+      
+      <div id="igt">
+      
+      </div>
+      
+      <span id="topTime" class="generalText"></span>
+      <span id="topScore" class="generalText boing"></span>
+      
+      <div id="controlBar" class="">
+        <span class="material-symbols-rounded" id="exit">
+          close
+        </span>
+        <span class="material-symbols-rounded" id="discord">
+          forum
+        </span>
+        <span class="material-symbols-rounded" id="chaos">
+          local_fire_department
+        </span>
+        <span class="material-symbols-rounded" id="rotation">
+          rotate_90_degrees_cw
+        </span>
+        <span class="material-symbols-rounded" id="restart">
+          restart_alt
+        </span>
+        <span class="material-symbols-rounded" id="mods">
+          edit
+        </span>
+        <span class="material-symbols-rounded" id="menu">
+          settings
+        </span>
+      
+        <select name="theme" id="theme" initial="default">
+          <option value="default" data-langname="default">Default</option>
+          <option value="performance" data-langname="performance">Performance</option>
+          <option value="light" data-langname="light">Light</option>
+          <option value="blue" data-langname="blue">Blue</option>
+          <option value="windows" data-langname="windows">Taskbar</option>
+          <option value="norefresh" data-langname="norefresh">Errrm,</option>
+          <option value="transparent" data-langname="transparent">Transparent</option>
+          <option value="braille" data-langname="braille">Braille</option>
+          <option value="shapes" data-langname="shapes">Shapes</option>
+        </select>
+
+        <span class="fontLoader" style='font-family: "Braille"'>.</span>
+      
+        <button id="resize" hidden onclick="window.location.reload()">resize</button>
+      </div>
+
+      <dialog id="settings">
+        <button id="menuClose" class="closeButton"><span class="material-symbols-rounded">
+          close
+        </span></button>
+        <h3 data-langname="GeneralSettings">General Settings</h3>
+        <p data-langname="TroubleScaling">Trouble scaling the game? Use Ctrl - and Ctrl Shift + to scale the game, and refresh with Ctrl R</p>
+
+        <label for="range" data-langname="language">Language</label>
+        <select id="Language" initial="english">
+          <option value="english">English ✅</option>
+          <option value="silly">Silly English ✅</option>
+        </select>
+        <hr>
+        <label for="range" data-langname="musicVolume">Music Volume</label>
+        <input type="range" id="MusicVolume" name="MusicVolume" min="0" max="1" step='.1' initial=".5">
+        <hr>
+        <label for="range" data-langname="sfx">SFX Volume</label>
+        <input type="range" id="SFXVolume" name="SFXVolume" min="0" max="1" step='.1' initial=".5">
+        <hr>
+        <label for="range" data-langname="fullscreen">Fullscreen</label>
+        <input type="range" id="Fullscreen" name="Fullscreen" min="0" max="1" step='1' initial="1">
+        <hr>
+        <label for="range" data-langname="performanceMode">Disable floaty texts</label>
+        <input type="range" id="Performacnce" name="Performacnce" min="0" max="1" step='1' initial="1">
+        <hr>
+        <label for="range" data-langname="restartExplosion">Restart Explosion</label>
+        <input type="range" id="RestartExplosion" name="RestartExplosion" min="0" max="1" step='1' initial="1">
+        <hr>
+        <label for="range" data-langname="cheatsT">Cheats</label>
+        <input type="range" id="Cheats" name="Cheats" min="0" max="1" step='1' initial="0">
+        <hr>
+        <div id="cheatsHidden" hidden>
+          <h3 data-langname="howtocheats">How to use cheats</h3>
+          <p><i data-langname="cheats1">Achievements are paused with Cheats enabled</i><br>
+          <br><span data-langname="cheats2">Holding ONE (1) halts the physics engine only</span>
+          <br><span data-langname="cheats3">Pressing TWO (2) cycles "Next is"</span>
+          <br><span data-langname="cheats4">Pressing THREE (3) spawns a Decagon</span>
+          <br><span data-langname="cheats5">Pressing FOUR (4) deletes all dead shapes</span>
+          <br><span data-langname="cheats6">Pressing FIVE (5) causes a nuclear explosion</span>
+          <br><span data-langname="cheats7">Holding SIX (6) runs the physics engine 3x as fast</span>
+          <br><span data-langname="cheats8">Pressing SEVEN (7) i am speed</span>
+          </p>
+          <hr>
+        </div>
+        <h3 data-langname="customTheme">Custom theme</h3>
+        <textarea placeholder="body { background-color: #e0f }" id="customThemeText"></textarea>
+        <hr>
+        <div id="donate">
+          <h3 data-langname="donate">Donate</h3>
+          <p data-langname="donateMSG">help me out to make more funny games for cheap. I'm 14 from australia so keep note that any financial support will likely go towards flavoured milk.</p>
+          <button>$5</button><button>$15</button><button>$50</button>  
+        </div>
+        <br>
+        <hr>
+        <h3 data-langname="credits">Credits</h3>
+        <ul>
+          <li data-langname="credits1">Big silly man - coding398</li>
+          <li data-langname="credits2">Music - flowerhead</li>
+          <li data-langname="credits3">SFX - freesound.org</li>
+          <li data-langname="credits4">p5play.org - Quinton Ashley</li>
+          <li data-langname="credits5">Translators - </li>
+        </ul>
+      </dialog>
+
+      <dialog id="modModal">
+        <button id="modsClose" class="closeButton"><span class="material-symbols-rounded">
+          close
+        </span></button>
+        
+        <h3 data-langname="customGamemodes">Custom gamemodes</h3>
+        <p><span data-langname="CG1">You can create & play custom gamemodes via a mod script.</span>
+        <br><span data-langname="CG2">Achievements cannot be gained with a custom gamemode.</span>
+        <br></p>
+        <textarea placeholder="const mod = { ... }" id="modContents"></textarea>
+        <br><br>
+        <button class="b b1" onclick="runMod(99)" data-langname="CG3">Run gamemode</button>
+        <button class="b b2" onclick="runMod(99, true)" data-langname="CG4">Save to list</button>
+        <br>
+        <hr>
+        <h3 data-langname="CG5">Saved gamemodes</h3>
+        <button class="b" data-langname="CG6">Find more on the Steam Workshop!</button>
+        <br><br>
+        <div id="gamemodes">
+          <div class="gamemode">
+            <h4>Suika-like <span class="by">by coding398</span></h4>
+            <a class="start"><span class="material-symbols-rounded">
+              sports_esports
+              </span> START</a>
+            <a><span class="material-symbols-rounded">
+              delete
+              </span> DELETE</a>
+          </div>
+        </div>
+      </dialog>
+      
+      <img id="logo" src="./logo.png" alt="DODECA DONE">
+    </content>
+
+    <div id="donators">
+      <h3 data-langname="generousDonators">GENEROUS DONATORS:</h3>
+      <p>coding398 - $100</p>
+      <p>coding398 - $30</p>
+    </div>
+
+    <div id="LOOKATMEIMAHUGEBLACKBALL"></div>
+
+    <script defer src="./index.js"></script>
+  </body>
+</html>

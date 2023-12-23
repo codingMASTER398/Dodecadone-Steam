@@ -1,0 +1,141 @@
+<html>
+    <head>
+        <script>window.isMod=true; isMod=true</script>
+        <script src="http://127.0.0.1:4622/src/lib/p5.js"></script>
+        <script src="http://127.0.0.1:4622/src/lib/p5sound.js"></script>
+            
+        <script src="http://127.0.0.1:4622/src/lib/planck.js"></script>
+        <script src="http://127.0.0.1:4622/src/lib/p5play.js"></script>
+
+        <script src="http://127.0.0.1:4622/src/lib/popper.js"></script>
+        <script src="http://127.0.0.1:4622/src/lib/tippy.js"></script>
+
+        <script src="http://127.0.0.1:4622/src/lib/particles.js"></script>
+
+        <style>
+        @font-face {
+            font-family: 'Material Symbols Rounded';
+            font-style: normal;
+            font-weight: 100 700;
+            src: url(http://127.0.0.1:4622/src/font/material.woff2) format('woff2');
+        }
+
+        .material-symbols-rounded {
+            font-family: 'Material Symbols Rounded';
+            font-weight: normal;
+            font-style: normal;
+            font-size: 24px;
+            line-height: 1;
+            letter-spacing: normal;
+            text-transform: none;
+            display: inline-block;
+            white-space: nowrap;
+            word-wrap: normal;
+            direction: ltr;
+            -webkit-font-feature-settings: 'liga';
+            -webkit-font-smoothing: antialiased;
+        }
+        </style>
+        <link rel="stylesheet" href="http://127.0.0.1:4622/src/css/game.css">
+
+        <meta charset="UTF-8">
+        <title>Dodecadone</title>
+        <link rel="icon" type="image/png" href="http://127.0.0.1:4622/src/favicon.png" />
+        <script src="http://127.0.0.1:4622/src/settings.js" defer></script>
+        <script>
+            var script = document.createElement('script');
+            script.src = "http://127.0.0.1:4622/mods/" + new URLSearchParams(window.location.search).get("mod");
+
+            script.onload = function () {
+                var script2 = document.createElement('script');
+                script2.src = "http://127.0.0.1:4622/src/index.js";
+
+                document.head.appendChild(script2)
+            };
+
+            document.head.appendChild(script)
+        </script>
+    </head>
+    <body>
+
+        <div id="particles-js"></div>
+
+        <cover2></cover2>
+        <cover3></cover3>
+        <cover></cover>
+
+        <content>
+
+        <div id="bgText" class="generalText">
+            <h1 id="textOne">imma dodeca</h1>
+            <p id="textTwo">YOUR MOTHER</p>
+        </div>
+        
+        <div id="igt">
+        
+        </div>
+        
+        <span id="topTime" class="generalText"></span>
+        <span id="topScore" class="generalText boing"></span>
+        
+        <div id="controlBar" class="">
+            <span class="material-symbols-rounded" id="chaos">
+            local_fire_department
+            </span>
+            <span class="material-symbols-rounded" id="rotation">
+            rotate_90_degrees_cw
+            </span>
+            <span class="material-symbols-rounded" id="restart">
+            restart_alt
+            </span>
+            <span class="material-symbols-rounded" id="menu">
+            settings
+            </span>
+        
+            <select name="theme" id="theme" initial="default">
+            <option value="default">Default</option>
+            <option value="performance">Performance</option>
+            <option value="light">Light</option>
+            <option value="blue">Blue</option>
+            <option value="windows">Taskbar</option>
+            <option value="norefresh">Errrm,</option>
+            <option value="transparent">Transparent</option>
+            <option value="braille">Braille</option>
+            <option value="shapes">Shapes</option>
+            </select>
+
+            <span class="fontLoader" style='font-family: "Braille"'>.</span>
+        
+            <button id="resize" hidden onclick="window.location.reload()">resize</button>
+        </div>
+
+        <dialog id="settings">
+            <button id="menuClose" class="closeButton"><span class="material-symbols-rounded">
+            close
+            </span></button>
+            <h3 data-langname="GeneralSettings">General Settings</h3>
+            <p data-langname="TroubleScaling">Trouble scaling the game? Use Ctrl - and Ctrl Shift + to scale the game, and refresh with Ctrl R</p>
+
+            <label for="range" data-langname="language">Language</label>
+            <select id="Language" initial="english">
+                <option value="english">English ✅</option>
+                <option value="silly">Silly English ✅</option>
+            </select>
+            <hr>
+            <label for="range" data-langname="musicVolume">Music Volume</label>
+            <input type="range" id="MusicVolume" name="MusicVolume" min="0" max="1" step='.1' initial=".5">
+            <hr>
+            <label for="range" data-langname="sfx">SFX Volume</label>
+            <input type="range" id="SFXVolume" name="SFXVolume" min="0" max="1" step='.1' initial=".5">
+            <hr>
+            <label for="range" data-langname="performanceMode">Disable floaty texts</label>
+            <input type="range" id="Performacnce" name="Performacnce" min="0" max="1" step='1' initial="1">
+            <hr>
+            <label for="range" data-langname="restartExplosion">Restart Explosion</label>
+            <input type="range" id="RestartExplosion" name="RestartExplosion" min="0" max="1" step='1' initial="1">
+        </dialog>
+        
+        <img id="logo" src="http://127.0.0.1:4622/src/logo.png" alt="DODECA DONE">
+        </content>  
+    </body>
+    </html>

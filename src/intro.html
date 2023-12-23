@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="./css/intro.css">
+        <script src="lib/particles.js"></script>
+    </head>
+    <body>
+        <div id="particles-js"></div>
+        <script src="./intro.js" defer></script>
+
+        <div id="blocks">
+            <div class="block biggest">
+                <img src="./img/coding398.png">
+            </div>
+            <br>
+            <div class="block big">
+                <img src="./img/p5play.png">
+                <img src="./img/flowerhead.jpg">
+                <img src="./img/by-nc-sa.svg">
+            </div>
+            <p data-langname="notableLibraries">Notable libraries:</p>
+            <div class="block small">
+                <img src="./img/freesound.png">
+                <img src="./img/tippy.svg">
+                <img src="./img/p5js.svg">
+                <img src="./img/electron.png">
+                <img src="./img/particles.png">
+            </div>
+        </div>
+
+        <div id="contributors">
+            <h3 data-langname="directContributors">Direct Contributors</h3>
+            <span>@codingMASTER398</span>
+            <span>@flowerheadmusic</span>
+            <span>@Sidd_</span>
+            <span>@spiralling_vortex</span>
+        </div>
+
+        <div id="LOOKATMEIMAHUGEBLACKBALL"></div>
+        <script defer>
+            if(window.isMod){
+            if(!window.lcl) window.lcl = {mod:true}
+            window.LCL = {
+                setItem: (item, val) => {window.lcl[item] = val},
+                getItem: (item) => window.lcl[item]
+            }
+            }else window.LCL = localStorage;
+
+            ;(async()=>{
+                strings = await fetch(`http://127.0.0.1:4622/src/i18n/${LCL.getItem("settingLanguage") || "english"}.json`)
+                strings = await strings.json();
+
+                [...document.getElementsByTagName("*")].forEach((e)=>{
+                    if(e.getAttribute("data-langname")) e.innerText = strings.body[e.getAttribute("data-langname")]
+                })
+            })();
+
+            setTimeout(()=>{
+                window.location.href = "./index.html"
+            },10_500)
+        </script>
+    </body>
+</html>

@@ -1,0 +1,634 @@
+@font-face {
+  font-family: "Roboto Slab";
+  src: url("../font/RobotoSlab-VariableFont_wght.ttf");
+}
+
+@font-face {
+  font-family: "Braille";
+  src: url("../font/braille.ttf");
+}
+
+.fontLoader{ display: none; }
+
+.p5Canvas{
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 0;
+}
+
+#particles-js{
+  position: fixed;
+  z-index: -5;
+  width: 100vw;
+  height: 100vh;
+}
+
+body{
+  margin: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: transparent;
+  font-family: 'Roboto Slab', 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  background: black radial-gradient(circle, rgba(209,155,27,0.5) 0%, rgba(122,72,2,0.7) 100%);
+}
+
+body.transparent{
+  background: transparent;
+}
+
+body.performance #particles-js, body.transparent #particles-js{
+  display: none;
+}
+body.performance *{
+  image-rendering: pixelated !important;
+  shape-rendering: pixelated !important;
+  text-rendering: pixelated !important;
+}
+
+body.braille *{
+  font-family: "Braille";
+}
+body.braille .material-symbols-rounded{
+  font-family: 'Material Symbols Rounded' !important;
+}
+body.braille *:hover{
+  font-family: inherit;
+}
+
+body.light{
+  background: radial-gradient(circle, rgba(150,150,150,1) 0%, rgba(130,130,130,1) 100%) !important;
+}
+body.blue{
+  background: radial-gradient(circle, rgba(90,90,110,1) 0%, rgba(80,80,120,1) 100%) !important;
+}
+
+body.beach{
+  background: url("https://cdn.pixabay.com/photo/2016/11/22/07/26/indiana-dunes-state-park-1848559_1280.jpg") !important;
+  background-size: cover !important;
+  backdrop-filter: blur(5px) !important;
+  background-position: center !important;
+}
+body.beach:before {
+  content: '';
+  background-color: #5f5f5f;
+  opacity: 0.3;
+  width: 100%;
+  height: 100%;
+  z-index: -1;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+*{
+  z-index: 2;
+}
+
+body.shapes{
+  background: #fff;
+}
+
+body.shapes cover{
+  pointer-events: none;
+  background-color: rgba(0,0,0,0.5);
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  z-index: -1;
+}
+body.shapes cover2{
+  pointer-events: none;;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  transform: rotateX(-10deg) rotateY(-35deg);
+  animation: coverA 5s infinite linear, coverZoom 20s infinite alternate-reverse;
+
+  z-index: -1;
+
+  background-color: #f5f5f5;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='49' viewBox='0 0 28 49'%3E%3Cg fill-rule='evenodd'%3E%3Cg id='hexagons' fill='%23daa520' fill-opacity='0.28' fill-rule='nonzero'%3E%3Cpath d='M13.99 9.25l13 7.5v15l-13 7.5L1 31.75v-15l12.99-7.5zM3 17.9v12.7l10.99 6.34 11-6.35V17.9l-11-6.34L3 17.9zM0 15l12.98-7.5V0h-2v6.35L0 12.69v2.3zm0 18.5L12.98 41v8h-2v-6.85L0 35.81v-2.3zM15 0v7.5L27.99 15H28v-2.31h-.01L17 6.35V0h-2zm0 49v-8l12.99-7.5H28v2.31h-.01L17 42.15V49h-2z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");  
+}
+body.shapes cover3{
+  pointer-events: none;;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  transform: rotateX(-15deg) rotateY(-25deg);
+  animation: coverB 5s infinite linear, coverBlink 10s infinite;
+  scale: 1.5;
+
+  z-index: -1;
+
+  background-color: #f5f5f5;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='80' height='80' viewBox='0 0 80 80'%3E%3Cg fill='%23daa520' fill-opacity='0.28'%3E%3Cpath fill-rule='evenodd' d='M11 0l5 20H6l5-20zm42 31a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM0 72h40v4H0v-4zm0-8h31v4H0v-4zm20-16h20v4H20v-4zM0 56h40v4H0v-4zm63-25a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM53 41a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-30 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm-28-8a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zM56 5a5 5 0 0 0-10 0h10zm10 0a5 5 0 0 1-10 0h10zm-3 46a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm10 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM21 0l5 20H16l5-20zm43 64v-4h-4v4h-4v4h4v4h4v-4h4v-4h-4zM36 13h4v4h-4v-4zm4 4h4v4h-4v-4zm-4 4h4v4h-4v-4zm8-8h4v4h-4v-4z'/%3E%3C/g%3E%3C/svg%3E");  
+}
+@keyframes coverA {
+  0%{
+    transform: rotateX(-10deg) rotateY(-35deg);
+    background-position: 0 0;
+  }
+  100%{
+    transform: rotateX(-10deg) rotateY(-35deg);
+    background-position: 168px 0;
+  }
+}
+@keyframes coverB {
+  0%{
+    transform: rotateX(-10deg) rotateY(-35deg);
+    background-position: 0 0;
+  }
+  100%{
+    transform: rotateX(-10deg) rotateY(-35deg);
+    background-position: 80px 0;
+  }
+}
+@keyframes coverZoom{
+  0%{
+    scale: 1.5
+  }
+  100%{
+    scale: 2;
+  }
+}
+@keyframes coverBlink {
+  0%, 33%{
+    opacity: 0.3;
+  }
+  50%{
+    opacity: 0.5;
+    animation-timing-function: ease-in;
+  }
+  66%, 100%{
+    opacity: 0.3;
+    animation-timing-function: ease-out;
+  }
+}
+
+.material-symbols-rounded {
+  font-variation-settings:
+  'FILL' 0,
+  'wght' 300,
+  'GRAD' 200,
+  'opsz' 48
+}
+
+#logo{
+  position: absolute;
+  top: 42px;
+  left: 42px;
+  width: 300px;
+  opacity: 0.4;
+  animation: logo 20s infinite alternate-reverse;
+  transition: 1s;
+  max-width: 20%;
+}
+
+body.windows #logo{
+  bottom: 12px;
+  right: 32px;
+  top: initial; left: initial;
+  width: 100px;
+}
+
+body.light #logo{
+  filter: invert(1);
+  opacity: 0.9;
+}
+
+@keyframes logo {
+  0%{
+    rotate: -5deg;
+  }
+  100%{
+    rotate: 5deg;
+  }
+}
+
+#controlBar{
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  padding: 12px;
+  padding-left: 36px;
+  padding-right: 36px;
+  border-radius: 500px;
+  background-color: rgba(0,0,0,0.4);
+  box-shadow: 0 0 12px rgba(0,0,0,0.3);
+  color: white;
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
+
+  transition: 1s;
+}
+
+#controlBar.changedSize::after{
+  position: absolute;
+  top: -26px;
+  left: 50%;
+  text-align: center;
+  transform: translateX(-50%);
+  display: block;
+  content: "Window resized. CTRL+R to fix, however the game will restart.";
+  font-family: "Roboto Slab";
+  font-size: x-small;
+  width: 500px;
+}
+
+body.windows #controlBar{
+  bottom: 0px;
+  left: 0;
+  width: 100%;
+  transform: translate(0, 0);
+  border-radius: 0px;
+}
+
+#controlBar p{
+  margin: 0;
+  margin-left: 6px;
+  font-size: small;
+  mix-blend-mode: difference;
+  position: relative;
+  top: 6px;
+}
+
+#controlBar span{
+  margin: 0;
+  font-size: xx-large !important;
+  cursor: pointer;
+  transition: 0.1s ease-out;
+}
+
+#controlBar span:hover{
+  scale: 1.1;
+  transition: 0.1s ease-out;
+}
+
+#controlBar select{
+  background: rgba(0,0,0,0.5);
+  border: none;
+  border-radius: 3px;
+  padding: 3px;
+  color: white;
+}
+
+option{
+  background-color: black;
+  color: white;
+}
+
+.enabled{
+  color: red;
+}
+
+#bgText{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: rgba(255,255,255);
+  opacity: 0.6;
+  text-align: center;
+  transition: 1s;
+}
+
+#bgText *{
+  margin: 3px;
+}
+
+#bgText .bounce{
+  animation: bop 0.2s;
+}
+@keyframes bop {
+  0%{
+    transform: translate(0,0) rotate(0deg);
+  }
+  70%{
+    transform: translate(0,-8px) rotate(-3deg);
+  }
+  100%{
+    transform: translate(0,0) rotate(0deg);
+  }
+}
+
+#bgText.dodecadone{
+  font-size: 60px;
+  transition: 1.8s;
+}
+
+#topTime{
+  position: absolute;
+  font-size: medium;
+  top: 42px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  color: white;
+  opacity: 0.4;
+}
+
+#topScore{
+  position: absolute;
+  font-size: 24px;
+  top: 64px;
+  left: 50%;
+  transform: translate(-50%, 0);
+  color: white;
+  opacity: 0.4;
+}
+
+#topScore.boing{
+  font-size: 32px;
+  transition: 0.2s;
+}
+
+body.light .generalText{
+  color: black !important;
+  opacity: 0.9 !important;
+}
+
+@keyframes float {
+  0%{
+    transform: translate(-50%, -60px) rotate(10deg) scale(0.8);
+    opacity:  1;
+  }
+  100%{
+    transform: translate(-50%, -120px) rotate(-10deg) scale(1.2);
+    opacity:  0;
+  }
+}
+
+dialog{
+  width: 400px;
+  height: 600px;
+  padding: 24px;
+  background-color: rgba(45, 30, 0, 0.8);
+  border-radius: 12px;
+  padding-left: 64px;
+  padding-right: 64px;
+  color: white;
+  border: none;
+
+  opacity: 0;
+  transition: 1s;
+  box-shadow: 0 0 50px rgba(0,0,0,0.3);
+
+  outline: 2px solid white;
+}
+
+dialog::backdrop{
+  background: linear-gradient(45deg, #ffffff80 25%, transparent 21%) , linear-gradient(315deg, #ffffff80 25%, transparent 21%), linear-gradient(45deg, #ffffff 10%, transparent 11%), linear-gradient(315deg, #ffffff 10%, transparent 11%),linear-gradient(135deg, #ffffff80 25%, transparent 21%) , linear-gradient(225deg, #ffffff80 25%, transparent 21%), linear-gradient(135deg, #ffffff 10%, transparent 11%), linear-gradient(225deg, #ffffff 10%, transparent 11%), radial-gradient(#ffffff 20%, transparent 21%);
+        background-size: 3em 3em;
+        background-color: transparent;
+  transition: 0.5s;
+  opacity: 0.05;
+  filter: blur(3px);
+}
+
+dialog.closing{
+  scale: 0.5;
+  transition: 0.1s ease-in;
+}
+
+dialog:has(.closeButton:hover)::backdrop, dialog.closing::backdrop{
+  filter: blur(50px);
+  transition: 0.5s;
+}
+
+dialog[open]::backdrop{
+  animation: fadeinbg 0.1s ease-in forwards;
+}
+dialog[open] {
+  animation: fadein 0.1s ease-in forwards;
+}
+
+@keyframes fadeinbg{
+  0%{
+    opacity: 0;
+  }
+}
+
+@keyframes fadein{
+  0%{
+    opacity:0;
+    transform: scale(0.9);
+  }
+  100%{
+    opacity:inherit;
+    transform: scale(1);
+  }
+}
+
+dialog hr{
+  border: none;
+  border-top: 1px solid rgba(255,255, 255,0.3);
+  margin-top: 3px;margin-bottom: 3px;;
+}
+
+dialog input{
+  float: right;
+}
+
+.closeButton{
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  border-radius: 100%;
+  aspect-ratio: 1;
+  border: none;outline: 2px solid rgba(100,100,100,0.7);
+  background: rgba(0,0,0,0.5); color: white;
+  transition: 0.2s;
+  cursor: pointer;
+}
+
+.closeButton *{
+  vertical-align: -webkit-baseline-middle;
+}
+
+.closeButton:hover{
+  outline: 2px solid white;
+  transition: 0.2s;
+}
+
+dialog select{
+	margin-top: 4px;
+	float: right;
+	width: 129px;
+  box-sizing: border-box;
+  padding-left: 6px;
+  padding-right: 6px;
+  border-radius: 3px;
+  border: none;
+  background: grey;
+  color: white;
+  height: 16px;
+  font-size: x-small;
+  font-family: "Roboto Slab";
+}
+
+input{
+  -webkit-appearance: none;
+  background: linear-gradient(90deg, grey 0%, rgb(196, 196, 196) 100%);
+  border-radius: 3px;
+}
+
+input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 26px;
+  height: 16px;
+  border-radius: 3px;
+  background: white;
+  cursor: pointer;
+}
+
+dialog p{
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', Arial;
+}
+
+dialog textarea{
+  width: 100%;
+  height: 100px;
+  background-color: black;
+  color: white;
+  outline: 1px solid white;
+  resize: none;
+  border-radius: 3px;
+  box-sizing: border-box;
+}
+
+dialog .b{
+  width: 100%;
+  height: 32px;
+  background-color: black;
+  font-family: "Roboto Slab";
+  color: white;
+  border: none;
+  outline: 1px solid white;
+  cursor: pointer;
+}
+
+dialog .b:not(.b1, .b2){
+  border-radius: 8px;
+}
+
+dialog .b:hover, dialog #donate button:hover{
+  background-color: rgb(36, 36, 36);
+}
+
+dialog #donate button{
+  width: 33.3%;
+  box-sizing: border-box;
+  padding: 10px;
+
+  background-color: rgb(26, 26, 26);
+  font-family: "Roboto Slab";
+  color: white;
+  border: none; border-radius: 0px;
+  outline: 1px solid white;
+  cursor: pointer;
+}
+
+dialog #donate button:nth-child(3){ border-top-left-radius: 8px; border-bottom-left-radius: 8px;}
+dialog #donate button:nth-child(5){ border-top-right-radius: 8px; border-bottom-right-radius: 8px;}
+dialog .b.b1{border-top-left-radius: 8px; border-top-right-radius: 8px;}
+dialog .b.b2{border-bottom-left-radius: 8px; border-bottom-right-radius: 8px;}
+
+dialog li{
+  font-family: "Roboto";
+  list-style-type: square;
+}
+
+.highlighted{
+  background-color: rgba(255,255, 255,0.1);
+}
+
+.gamemode{
+  box-sizing: border-box;
+  padding: 5px;
+  padding-left: 8px; padding-right: 8px;
+  border-radius: 8px;
+  background-color: black;
+  outline: 1px solid white;
+}
+
+.gamemode .material-symbols-rounded{
+  vertical-align: -7px;
+}
+
+.gamemode *{
+  margin: 3px;
+}
+
+.gamemode .by{
+  opacity: 0.7;
+}
+
+.gamemode a{
+  color: white;
+  text-decoration: none;
+}
+
+.gamemode .start{
+  color: rgb(209,155,27);
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #888;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}
+
+#donators{
+  position: fixed;
+  top: 42px;
+  right: 42px;
+  text-align: right;
+  opacity: 0.4;
+}
+#donators *{
+  margin: 0;
+  color: white;
+  font-size: small;
+}
+
+#LOOKATMEIMAHUGEBLACKBALL{
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background-color: black;
+  aspect-ratio: 1;
+
+  animation: fadeOut 1.5s ease-out forwards;
+  animation-delay: 0.2s;
+  width: 200vw;
+  z-index: 999;
+}
+#LOOKATMEIMAHUGEBLACKBALL.out{animation: fadeIn .5s ease-in forwards;}
+
+@keyframes fadeIn {
+  0%{width: 0px;}
+  100%{width: 200vw;}
+}
+@keyframes fadeOut {
+  0%{width: 200vw;}
+  100%{width: 0px;}
+}

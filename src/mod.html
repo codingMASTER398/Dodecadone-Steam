@@ -1,0 +1,72 @@
+<iframe sandbox="allow-scripts"></iframe>
+<button onclick="out()">EXIT MOD</button>
+    
+<script>
+    document.querySelector(`iframe`).src = "http://127.0.0.1:4622/src/mod-content.html?mod=" + new URLSearchParams(window.location.search).get("mod")
+
+    function out(){
+        document.querySelector(`#LOOKATMEIMAHUGEBLACKBALL`).classList.add(`out`)
+        setTimeout(()=>{
+            window.location.href = './index.html'
+        },500)
+    }
+</script>
+
+<div id="LOOKATMEIMAHUGEBLACKBALL"></div>
+
+<style>
+    body{
+        margin: 0;
+        overflow: hidden;
+        background-color: white;
+    }
+    iframe{
+        width: 100vw;
+        height: 100vh;
+        border: none;
+    }
+
+    button{
+        position: fixed;
+        bottom: 24px;
+        left: 46px;
+        padding: 12px;
+        padding-left: 32px;
+        padding-right: 32px;
+        color: white;
+        border-radius: 6px;
+        background-color: rgba(0, 0, 0, 0.5);
+        border: none;
+        z-index: 999999;
+    }
+    button:hover{
+        background-color: rgb(0, 0, 0);
+        cursor: pointer;
+    }
+
+    #LOOKATMEIMAHUGEBLACKBALL{
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 50%;
+        background-color: black;
+        aspect-ratio: 1;
+
+        animation: fadeOut 1.5s ease-out forwards;
+        animation-delay: 0.2s;
+        width: 200vw;
+
+        z-index: 999;
+    }
+    @keyframes fadeIn {
+        0%{width: 0px;}
+        100%{width: 200vw;}
+    }
+    @keyframes fadeOut {
+        0%{width: 200vw;}
+        100%{width: 0px;}
+    }
+
+    #LOOKATMEIMAHUGEBLACKBALL.out{animation: fadeIn .5s ease-in forwards;}
+</style>

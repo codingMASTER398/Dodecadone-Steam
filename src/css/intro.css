@@ -1,0 +1,119 @@
+@font-face {
+    font-family: "Roboto Slab";
+    src: url("../font/RobotoSlab-VariableFont_wght.ttf");
+}
+
+body{
+    background-color: #131313;
+    overflow: hidden;
+    font-family: "Roboto Slab";
+}
+
+#particles-js{
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0; left: 0;
+    z-index: -1;
+}
+
+.block{
+    width: 50vw;
+    position: relative;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 24px;
+    align-items: center;
+}
+
+.block img{
+    height: fit-content;
+    border-radius: 12px;
+}
+
+.block.biggest img{
+    height: 130px;
+}
+
+.block.big img{
+   height: 90px;
+}
+.block.small img{
+   height: 50px;
+}
+
+#blocks{
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+
+    flex-direction: column;
+    gap: 12px;
+    opacity: 0;
+
+    animation: blocks 10s;
+
+    color: white;
+}
+
+#contributors{
+    position: absolute;
+
+    top: 0;
+    left: 0;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+
+    opacity: 0;
+
+    flex-direction: column;
+    gap: 12px;
+
+    color: white;
+
+    animation: contributors 10s;
+}
+
+#contributors h3{
+    font-size: xx-large;
+    margin: 10px;
+}
+
+#LOOKATMEIMAHUGEBLACKBALL{
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    background-color: black;
+    aspect-ratio: 1;
+    animation: fadeOut 1.5s ease-in;
+    animation-delay: 9s;
+}
+
+@keyframes blocks {
+    0%, 50%{
+        opacity: 1;
+        scale: 1;
+    }
+    55%, 100%{ opacity: 0; scale: 0.8; }
+}
+
+@keyframes contributors {
+    0%, 50%{
+        opacity: 0; scale: 0.8;
+    }
+    55%, 100%{ opacity: 1; scale: 1; }
+}
+
+@keyframes fadeOut {
+    0%{width: 0px;}
+    100%{width: 200vw;}
+}
