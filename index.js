@@ -22,14 +22,15 @@ const isLinux = process.platform == "linux";
 const createWindow = async() => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
-    width: 1000,
+    width: 1200,
     height: 800,
     transparent: true,
     webSecurity: true,
     contextIsolation: true,
     webPreferences: {
       preload: path.join(__dirname, '/preloads/transmitter.js')
-    }
+    },
+    icon: process.cwd() + '/favicon.ico'
   })
 
   mainWindow.setMenuBarVisibility(false)
@@ -124,7 +125,7 @@ app.whenReady().then(async() => {
         updateMods()
         break;
       case 4:
-        shell.openExternal("https://discord.gg/WyksQS73p8")
+        shell.openExternal("https://discord.gg/uRGAHkHRdC")
         break;
       case 5:
         app.quit()

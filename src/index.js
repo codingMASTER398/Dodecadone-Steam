@@ -24,6 +24,17 @@ if(window.isMod){
   document.getElementsByTagName("*").forEach((e)=>{
     if(e.getAttribute("data-langname")) e.innerText = strings.body[e.getAttribute("data-langname")]
   })
+
+  if(!isMod && LCL.getItem("settingLanguage") != "silly"){
+    let f = await fetch(`http://127.0.0.1:4622/src/i18n_dm/${LCL.getItem("settingLanguage") || "english"}.json`)
+    let ff = await fetch(`http://127.0.0.1:4622/src/i18n_dm/english.json`)
+
+    f = await f.json(), ff = await ff.json();
+
+    spawnableTraitsLang = spawnableTraits.map((t)=>{
+      return f[ff.indexOf(t)]
+    }) || structuredClone(spawnableTraits)
+  }
 })();
 
 const sounds = {
@@ -58,7 +69,12 @@ comboS = setTimeout(()=>{}, 0)
 const shapes = mod.shapes
 
 const spawnableTraits = mod.traits.map((t)=>t.name)
-let spawnableTraitsLang = mod.traits.map((t)=>t?.localisations?.[LCL.getItem("settingLanguage") || "english"]) || structuredClone(spawnableTraits)
+let spawnableTraitsLang;
+
+if(isMod || LCL.getItem("settingLanguage") == "silly"){
+  spawnableTraitsLang = mod.traits.map((t)=>t?.localisations?.[LCL.getItem("settingLanguage") || "english"]) || structuredClone(spawnableTraits)
+}
+
 //const spawnableTraits = ["dizzy"]
 
 function calculateTimeDifference(startDate, endDate) {
@@ -294,7 +310,19 @@ async function setup() {
       document.getElementsByTagName("*").forEach((e)=>{
         if(e.getAttribute("data-langname")) e.innerText = strings.body[e.getAttribute("data-langname")]
       })
-      spawnableTraitsLang = mod.traits.map((t)=>t?.localisations?.[LCL.getItem("settingLanguage") || "english"]) || structuredClone(spawnableTraits)
+
+      if(!isMod && LCL.getItem("settingLanguage") != "silly"){
+        let f = await fetch(`http://127.0.0.1:4622/src/i18n_dm/${LCL.getItem("settingLanguage") || "english"}.json`)
+        let ff = await fetch(`http://127.0.0.1:4622/src/i18n_dm/english.json`)
+    
+        f = await f.json(), ff = await ff.json();
+    
+        spawnableTraitsLang = spawnableTraits.map((t)=>{
+          return f[ff.indexOf(t)]
+        }) || structuredClone(spawnableTraits)
+      }else{
+        spawnableTraitsLang = mod.traits.map((t)=>t?.localisations?.[LCL.getItem("settingLanguage") || "english"]) || structuredClone(spawnableTraits)
+      }
     },100)
   })
 
