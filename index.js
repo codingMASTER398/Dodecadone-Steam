@@ -19,6 +19,36 @@ const { localStorage, sessionStorage } = require('electron-browser-storage');
 
 const isLinux = process.platform == "linux";
 
+const STEAM_APP_ID = 2754840;
+
+let steamworks, sw;
+
+if(isLinux){
+  try{
+    steamworks = require('./steamworks_linux/steamworksjs.linux-x64-gnu.node')
+    sw = steamworks
+  
+    steamworks = steamworks.init(STEAM_APP_ID)
+  
+    console.log(`Succeed Linux steamworks`)
+  }catch{
+    steamworks = false;
+  }
+}else{
+  try{
+    steamworks = require(`steamworks.js`)
+
+    steamworks = steamworks.init(STEAM_APP_ID)
+    sw = steamworks
+
+    console.log(`Succeed Windows steamworks`)
+  }catch(e){
+    console.error(`Steamworks failed to initialize on Windows`)
+
+    steamworks = false;
+  }
+}
+
 const createWindow = async() => {
   // Create the browser window.
   const mainWindow = new BrowserWindow({
@@ -28,7 +58,9 @@ const createWindow = async() => {
     webSecurity: true,
     contextIsolation: true,
     webPreferences: {
-      preload: path.join(__dirname, '/preloads/transmitter.js')
+      preload: path.join(__dirname, '/preloads/transmitter.js'),
+      contextIsolation: false,
+      nodeIntegration: true
     },
     icon: process.cwd() + '/favicon.ico'
   })
@@ -42,6 +74,8 @@ const createWindow = async() => {
       mainWindow.fullScreen = true
     }else  mainWindow.fullScreen = false;
   },1000)
+
+  require('steamworks.js').electronEnableSteamOverlay()
 }
 
 async function updateMods(){
@@ -65,6 +99,11 @@ async function updateMods(){
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
 app.whenReady().then(async() => {
+  if(steamworks == false){
+    dialog.showErrorBox(`Steam must be opened for Dodecadone to run!`, ``)
+    process.exit()
+  }
+
   if(!fs.existsSync("./mods")){
     fs.mkdirSync(`./mods`)
     fs.writeFileSync(`./mods/watermelonMod.js`, await (await net.fetch(`file:///${__dirname}/src/watermelonMod.js`)).text())

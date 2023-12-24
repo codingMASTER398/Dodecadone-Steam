@@ -17,6 +17,7 @@
     "electron-packager": "^17.1.1",
     "javascript-obfuscator": "^4.1.0",
     "mime": "^3.0.0",
-    "node-encryption": "^1.0.2"
+    "node-encryption": "^1.0.2",
+    "steamworks.js": "^0.3.1"
   }
 }
