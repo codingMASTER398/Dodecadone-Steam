@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="../css/workshop.css">
+    </head>
+    <body>
+        <div id="sectionOne">
+            <h1>Steam Workshop publisher</h1>
+            <p>Is your mod ready for publishing on the Steam Workshop?<br>Use this tool to quickly get it out there.
+            <br><br>The publishing experience is still in BETA, and editing items is not yet supported.</p>
+    
+            <br>
+            <textarea placeholder="// Mod name
+// Mod author
+const mod = {}" class="input1">// Mod name
+// Mod author
+const mod = {}</textarea>
+            <br><br>
+            <p class="statusText"></p>
+            <button class="nextButton" disabled>Next</button>
+        </div>
+        <div id="sectionTwo" hidden>
+            <h1 class="modName">Uploading [MOD NAME]</h1>
+            <p class="details">Author: </p>
+            <br>
+            <p>Preview image (max 3MB, PNG only)</p>
+            <input id="imageUpload" type="file" accept="image/png" />
+            <br>
+            <img id="image">
+            <br>
+            <textarea id="description" placeholder="Description..."></textarea>
+            <br>
+            <label for="visibility">Visibility: </label>
+            <select name="visibility" id="visibility">
+                <option value="0">Everyone</option>
+                <option value="1">Friends Only</option>
+                <option value="2">Private</option>
+                <option value="3">Unlisted</option>
+            </select>
+            <br><br>
+            <p>By submitting this item, you agree to the workshop terms of service found at https://steamcommunity.com/sharedfiles/workshoplegalagreement</p>
+            <button class="nextButton" disabled>Upload</button>
+            <br><br><br>
+        </div>
+        <div id="sectionThree" hidden>
+            <h1>uploading</h1>
+        </div>
+
+        <script defer src="./workshop.js"></script>
+    </body>
+</html>

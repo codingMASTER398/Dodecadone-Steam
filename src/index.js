@@ -7,7 +7,7 @@ let cpn = `
 *`
 
 // THE GROUNDS!!1
-let grounds, floor, sides, shapeG, combo = 0, comboS, spawnBar, nextDrop, best = 0, trash, chaos = false, allowRT = false, startTime = Date.now(), strings, frames = 0, placed = 0, dropLine = [], flipperL, flipperR, mTexts, highestCombo = 0, score = 0, cheatsWereEnabled = false, bubbles;
+let grounds, floor, sides, shapeG, combo = 0, comboS, spawnBar, nextDrop, best = 0, trash, chaos = false, allowRT = false, startTime = Date.now(), strings, frames = 0, placed = 0, dropLine = [], flipperL, flipperR, mTexts, highestCombo = 0, score = 0, cheatsWereEnabled = false, bubbles, lastRestart = Date.now();
 
 if(window.isMod){
   if(!window.lcl) window.lcl = {mod:true}
@@ -371,6 +371,8 @@ async function setup() {
   })
   
   document.getElementById(`restart`).addEventListener(`click`, ()=>{
+    lastRestart = Date.now()
+
     sounds.bang.currentTime = 0;
     if(LCL.getItem(`settingRestartExplosion`) == "1") sounds.bang.play();
     allSprites.attractTo(floor, -2000000)
@@ -483,6 +485,22 @@ function createShape(x,y,shape,index, trait){
   if(modTraitFromTraitName(s.trait).onSpawn){
     modTraitFromTraitName(s.trait).onSpawn(s)
   }
+
+  if(!isMod && cheatsWereEnabled == false){
+    proc.send({
+      type: 6,
+      achievement: shape.shape
+    })
+
+    if(index == 6 && trait == "void"){
+      proc.send({
+        type: 6,
+        achievement: "voidagon"
+      })
+    }
+  }
+
+  outbreakCheck()
 }
 
 function calculateDropLine(){
@@ -521,6 +539,17 @@ function easeOutBack(x) {
   const c3 = c1 + 1;
   
   return 1 + c3 * Math.pow(x - 1, 3) + c1 * Math.pow(x - 1, 2);
+}
+
+function outbreakCheck(){
+  if(!isMod && cheatsWereEnabled == false){
+    if(shapeG.filter((s)=>s.sick > 0).length == 20){
+      proc.send({
+        type: 6,
+        achievement: "outbreak"
+      })
+    }
+  }
 }
 
 function draw() {
@@ -679,6 +708,8 @@ function draw() {
       s._lastTrait = String(s.trait)
       console.log(`converting traits`)
       s.face.img = modTraitFromTraitName(s.trait).face.replace(`/`, `./`)
+
+      outbreakCheck()
     }
 
     if(s.index > highest) highest = s.index;
@@ -702,6 +733,24 @@ function draw() {
 
     if(modTraitFromTraitName(s.trait).onUpdate){
       modTraitFromTraitName(s.trait).onUpdate(s)
+    }
+
+    if(!isMod){
+      if(!s.lastPos) s.lastPos = {x:s.x, y: s.y}
+      else{
+        let a = s.lastPos.x - s.x
+        let b = s.lastPos.y - s.y
+        let d = Math.sqrt(a*a + b*b)
+
+        if(d > 100 && (Date.now() - lastRestart > 10_000) && s.trait != "unstable") {
+          proc.send({
+            type: 6,
+            achievement: "100mph"
+          })
+        };
+
+        s.lastPos = {x:s.x, y: s.y}
+      }
     }
 
     shapeG.forEach((ss)=>{
@@ -828,6 +877,26 @@ function draw() {
     document.getElementById(`textOne`).classList.add(`bounce`)
 
     if(highest >= Object.keys(mod.shapes).length){
+
+      if(!isMod && shapeG.filter((s)=>s.index >= Object.keys(mod.shapes).length)[0].trait == "void"){
+        proc.send({
+          type: 6,
+          achievement: "voidadone"
+        })
+      }
+      if(!isMod && shapeG.filter((s)=>s.index >= Object.keys(mod.shapes).length)[0].trait == "growing"){
+        proc.send({
+          type: 6,
+          achievement: "againstAllOdds"
+        })
+      }
+      if(!isMod && shapeG.filter((s)=>s.index >= Object.keys(mod.shapes).length)[0].trait == "survivalOfTheFittest"){
+        proc.send({
+          type: 6,
+          achievement: "againstAllOdds"
+        })
+      }
+
       document.getElementById(`bgText`).classList.add(`dodecadone`)
       document.querySelector(`#textTwo`).innerText = calculateTimeDifference(startTime, startTime + Math.round((frames * (1000 / 60))))
       document.querySelector(`#textOne`).innerText = "DO"

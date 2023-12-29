@@ -11,7 +11,7 @@ Email me: coding398@outlook.com
 
 `)
 
-const { app, BrowserWindow, protocol, net, session, ipcMain, shell } = require('electron')
+const { app, BrowserWindow, protocol, net, session, ipcMain, shell, dialog } = require('electron')
 const path = require('node:path')
 const fs = require(`fs`)
 
@@ -28,7 +28,7 @@ if(isLinux){
     steamworks = require('./steamworks_linux/steamworksjs.linux-x64-gnu.node')
     sw = steamworks
   
-    steamworks = steamworks.init(STEAM_APP_ID)
+    steamworks.init(STEAM_APP_ID)
   
     console.log(`Succeed Linux steamworks`)
   }catch{
@@ -58,9 +58,7 @@ const createWindow = async() => {
     webSecurity: true,
     contextIsolation: true,
     webPreferences: {
-      preload: path.join(__dirname, '/preloads/transmitter.js'),
-      contextIsolation: false,
-      nodeIntegration: true
+      preload: path.join(__dirname, '/preloads/transmitter.js')
     },
     icon: process.cwd() + '/favicon.ico'
   })
@@ -74,8 +72,6 @@ const createWindow = async() => {
       mainWindow.fullScreen = true
     }else  mainWindow.fullScreen = false;
   },1000)
-
-  require('steamworks.js').electronEnableSteamOverlay()
 }
 
 async function updateMods(){
@@ -107,6 +103,10 @@ app.whenReady().then(async() => {
   if(!fs.existsSync("./mods")){
     fs.mkdirSync(`./mods`)
     fs.writeFileSync(`./mods/watermelonMod.js`, await (await net.fetch(`file:///${__dirname}/src/watermelonMod.js`)).text())
+  }
+
+  if(!fs.existsSync("./workshopUpload")){
+    fs.mkdirSync(`./workshopUpload`)
   }
 
   let denied = ['https', 'steam', 'ms-calculator', 'ws', 'wss', 'admin']
@@ -147,7 +147,7 @@ app.whenReady().then(async() => {
 
   createWindow()
 
-  ipcMain.handle('data', (e,data) => {
+  ipcMain.handle('data', async(e,data) => {
     data = JSON.parse(data)
 
     switch(data.type){
@@ -169,6 +169,34 @@ app.whenReady().then(async() => {
       case 5:
         app.quit()
         break;
+      case 6:
+        steamworks.achievement.activate(data.achievement)
+        break;
+      /*case 7: // scrapped steam workshop
+        console.log("YES", data)
+        
+        steamworks.workshop.createItem(STEAM_APP_ID).then(async(item)=>{
+          fs.mkdirSync(`./workshopUpload/${item.itemId}`)
+          fs.mkdirSync(`./workshopUpload/${item.itemId}/c`)
+          fs.writeFileSync(`./workshopUpload/${item.itemId}/preview.png`, data.previewImage, 'base64url')
+          fs.writeFileSync(`./workshopUpload/${item.itemId}/c/mod.js`, data.content)
+          console.log(item)
+
+          let res = await steamworks.workshop.updateItem(item.itemId, {
+            title: data.name,
+            description: data.description,
+            changeNote: "Initial Upload",
+            previewPath: __dirname + `/workshopUpload/${item.itemId}/preview.png`,
+            contentPath: __dirname + `/workshopUpload/${item.itemId}/c`,
+            tags: [],
+            visibility: data.visibility
+          }, STEAM_APP_ID)
+          steamworks.overlay.activateToWebPage(`steam://url/CommunityFilePage/${STEAM_APP_ID}`)
+          console.log(res)
+        }).catch((e)=>{
+          console.log("ERR", e)
+        })
+        break;*/
     }
   })
 
