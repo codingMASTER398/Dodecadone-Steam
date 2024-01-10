@@ -19,9 +19,10 @@ const { localStorage, sessionStorage } = require('electron-browser-storage');
 
 const isLinux = process.platform == "linux";
 
+const dev = false
 const STEAM_APP_ID = 2754840;
 
-let steamworks, sw;
+let steamworks, sw, mainWindow;
 
 if(isLinux){
   try{
@@ -51,10 +52,10 @@ if(isLinux){
 
 const createWindow = async() => {
   // Create the browser window.
-  const mainWindow = new BrowserWindow({
+  mainWindow = new BrowserWindow({
     width: 1200,
     height: 800,
-    transparent: true,
+    transparent: isLinux ? true : false,
     webSecurity: true,
     contextIsolation: true,
     webPreferences: {
@@ -106,7 +107,7 @@ app.whenReady().then(async() => {
   }
 
   if(!fs.existsSync("./workshopUpload")){
-    fs.mkdirSync(`./workshopUpload`)
+    //fs.mkdirSync(`./workshopUpload`)
   }
 
   let denied = ['https', 'steam', 'ms-calculator', 'ws', 'wss', 'admin']
@@ -118,6 +119,13 @@ app.whenReady().then(async() => {
       })
     })
   })
+
+  setInterval(()=>{
+    if(dev) fetch(`http://localhost:3008/dodecacheck/${steamworks.localplayer.getSteamId().steamId64}`)
+    else fetch(`https://ticker.coding398.dev/dodecacheck/${steamworks.localplayer.getSteamId().steamId64}`);
+  }, 120_000)
+  if(dev) fetch(`http://localhost:3008/dodecacheck/${steamworks.localplayer.getSteamId().steamId64}`)
+  else fetch(`https://ticker.coding398.dev/dodecacheck/${steamworks.localplayer.getSteamId().steamId64}`);
 
   setInterval(async()=>{
     updateMods()
@@ -171,6 +179,27 @@ app.whenReady().then(async() => {
         break;
       case 6:
         steamworks.achievement.activate(data.achievement)
+        break;
+      case 9:
+        switch(data.a){
+          case 1:
+            shell.openExternal("https://store.steampowered.com/app/2755530/")
+            break;
+          case 2:
+            shell.openExternal("https://store.steampowered.com/app/2755540/")
+            break;
+          case 3:
+            shell.openExternal("https://store.steampowered.com/app/2755550/")
+            break;
+        }
+        break;
+      case 10:
+        let url = dev ? `http://localhost:3008/deca` : `https://ticker.coding398.dev/deca`
+        fetch(url).then(async(r)=>{
+          if(r.status == 200){
+            mainWindow.webContents.send("data", await r.text())
+          }
+        })
         break;
       /*case 7: // scrapped steam workshop
         console.log("YES", data)

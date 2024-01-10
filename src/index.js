@@ -928,6 +928,26 @@ window.setup = setup;
 window.createShape = createShape;
 window.draw = draw;
 
+function donorUpdate(json){
+  let r = JSON.parse(json),
+    out = ``
+  r.forEach((it)=> out += `${it.name} - $${it.money}`)
+
+  document.querySelector(`donators`).innerText = out
+}
+window.addEventListener('message', async(event) => {
+  donorUpdate(event.data)
+})
+
+proc.send({
+  type: 10
+})
+setInterval(()=>{
+  proc.send({
+    type: 10
+  })
+}, 40_000)
+
 particlesJS.load('particles-js', 'http://127.0.0.1:4622/src/particles.json', function() {
   console.log('callback - particles.js config loaded');
 });

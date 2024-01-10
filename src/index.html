@@ -120,12 +120,12 @@
           <option value="english">English ✅</option>
           <option value="silly">Silly English ✅</option>
           <option value="french">Français ✅</option>
+          <option value="spanish">Español ✅</option>
+          <option value="german">Deutsch ✅</option>
           <option value="russian">Русский</option>
           <option value="turkish">Türkçe</option>
           <option value="chinese">中文</option>
           <option value="portuguese">Português</option>
-          <option value="spanish">Español</option>
-          <option value="german">Deutsch</option>
           <option value="italian">Italiano</option>
           <option value="arabic">العربية</option>
           <option value="japanese">日本語</option>
@@ -198,7 +198,7 @@
         <div id="donate">
           <h3 data-langname="donate">Donate</h3>
           <p data-langname="donateMSG">help me out to make more funny games for cheap. I'm 14 from australia so keep note that any financial support will likely go towards flavoured milk.</p>
-          <button>$5</button><button>$15</button><button>$50</button>  
+          <button onclick="proc.send({type: 9,a:1})">$4</button><button onclick="proc.send({type: 9,a:2})">$11</button><button onclick="proc.send({type: 9,a:3})">$30</button>  
         </div>
         <br>
         <hr>
@@ -246,11 +246,12 @@
       <img id="logo" src="./logo.png" alt="DODECA DONE">
     </content>
 
-    <!--<div id="donators">
+    <div id="donators">
       <h3 data-langname="generousDonators">GENEROUS DONATORS:</h3>
-      <p>coding398 - $100</p>
-      <p>coding398 - $30</p>
-    </div>-->
+      <donators>
+
+      </donators>
+    </div>
 
     <div id="LOOKATMEIMAHUGEBLACKBALL"></div>
 
