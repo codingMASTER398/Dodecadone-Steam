@@ -7,7 +7,7 @@ let cpn = `
 *`
 
 // THE GROUNDS!!1
-let grounds, floor, sides, shapeG, combo = 0, comboS, spawnBar, nextDrop, best = 0, trash, chaos = false, allowRT = false, startTime = Date.now(), strings, frames = 0, placed = 0, dropLine = [], flipperL, flipperR, mTexts, highestCombo = 0, score = 0, cheatsWereEnabled = false, bubbles, lastRestart = Date.now();
+let grounds, floor, sides, shapeG, combo = 0, comboS, spawnBar, nextDrop, best = 0, trash, chaos = false, allowRT = false, startTime = Date.now(), strings, frames = 0, placed = 0, dropLine = [], flipperL, flipperR, mTexts, highestCombo = 0, score = 0, cheatsWereEnabled = false, bubbles, lastRestart = Date.now(), didChaos = false;
 
 if(window.isMod){
   if(!window.lcl) window.lcl = {mod:true}
@@ -259,6 +259,10 @@ async function setup() {
   });
 
   if(!isMod) document.getElementById(`exit`).addEventListener(`click`, ()=>{
+    proc.send({
+      type: 6,
+      achievement: "leave"
+    })
     proc.send({
       type: 5
     })
@@ -637,6 +641,8 @@ function draw() {
     }
   }
 
+  if(chaos) didChaos = true;
+
   if(((kb.pressing(' ')) && spawnBar.color._getAlpha() >= 100) || chaos && spawnBar.color._getAlpha() >= 25){
     document.getElementById(`textTwo`).classList.remove(`bounce`)
     document.getElementById(`textTwo`).offsetWidth;
@@ -716,7 +722,15 @@ function draw() {
 
     s.face.x = s.x; s.face.y = s.y; s.face.rotation = s.rotation;
 
-    if(s.dead) return;
+    if(s.dead){
+      if(cheatsWereEnabled == false && !isMod){
+        proc.send({
+          type: 6,
+          achievement: "no"
+        })
+      }
+      return
+    };
 
     s.aliveFor++;
 
@@ -742,7 +756,7 @@ function draw() {
         let b = s.lastPos.y - s.y
         let d = Math.sqrt(a*a + b*b)
 
-        if(d > 100 && (Date.now() - lastRestart > 10_000) && s.trait != "unstable") {
+        if(d > 100 && (Date.now() - lastRestart > 10_000) && s.trait != "unstable" && cheatsWereEnabled == false) {
           proc.send({
             type: 6,
             achievement: "100mph"
@@ -859,6 +873,7 @@ function draw() {
     placed = 0;
     score = 0;
     cheatsWereEnabled = false
+    didChaos = false
 
     document.getElementById(`topScore`).innerText = `0`
     document.getElementById(`topTime`).innerText = `N/A`
@@ -878,23 +893,51 @@ function draw() {
 
     if(highest >= Object.keys(mod.shapes).length){
 
-      if(!isMod && shapeG.filter((s)=>s.index >= Object.keys(mod.shapes).length)[0].trait == "void"){
+      if(!isMod && shapeG.filter((s)=>s.index >= Object.keys(mod.shapes).length)[0].trait == "void" && cheatsWereEnabled == false){
         proc.send({
           type: 6,
           achievement: "voidadone"
         })
       }
-      if(!isMod && shapeG.filter((s)=>s.index >= Object.keys(mod.shapes).length)[0].trait == "growing"){
+      if(!isMod && shapeG.filter((s)=>s.index >= Object.keys(mod.shapes).length)[0].trait == "growing" && cheatsWereEnabled == false){
         proc.send({
           type: 6,
           achievement: "againstAllOdds"
         })
       }
-      if(!isMod && shapeG.filter((s)=>s.index >= Object.keys(mod.shapes).length)[0].trait == "survivalOfTheFittest"){
+      if(!isMod && shapeG.filter((s)=>s.index >= Object.keys(mod.shapes).length)[0].trait == "doctor" && cheatsWereEnabled == false){
         proc.send({
           type: 6,
-          achievement: "againstAllOdds"
+          achievement: "survivalOfTheFittest"
         })
+      }
+
+      if(!isMod && cheatsWereEnabled == false){
+        let time = Math.round(frames / 60)
+        if(time < 300){
+          proc.send({
+            type: 6,
+            achievement: "5minutes"
+          })
+        }
+        if(time < 600){
+          proc.send({
+            type: 6,
+            achievement: "10minutes"
+          })
+        }
+        if(time < 900){
+          proc.send({
+            type: 6,
+            achievement: "15minutes"
+          })
+        }
+        if(!didChaos){
+          proc.send({
+            type: 6,
+            achievement: "nochaos"
+          })
+        }
       }
 
       document.getElementById(`bgText`).classList.add(`dodecadone`)

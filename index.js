@@ -59,7 +59,8 @@ const createWindow = async() => {
     webSecurity: true,
     contextIsolation: true,
     webPreferences: {
-      preload: path.join(__dirname, '/preloads/transmitter.js')
+      preload: path.join(__dirname, '/preloads/transmitter.js'),
+      devTools: false
     },
     icon: process.cwd() + '/favicon.ico'
   })
@@ -240,6 +241,7 @@ app.whenReady().then(async() => {
 // for applications and their menu bar to stay active until the user quits
 // explicitly with Cmd + Q.
 app.on('window-all-closed', () => {
+  steamworks.achievement.activate("leave")
   if (process.platform !== 'darwin') app.quit()
 })
 
