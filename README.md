@@ -19,5 +19,7 @@ If you don't want to contribute financially, the best you can do is share the St
 
 **Keep in mind this is all spaghetti code lmao. Any person looking to one-up me with Prettier and that shabang will be exhiled.**
 
+I'll do updates *sometimes* to the Steam build with contributions made here.
+
 # If you're reading this in the game files after downloading
 Editing any files here can lead to the game not functioning. Verifying the integrity of the game files within Steam can fix this.
